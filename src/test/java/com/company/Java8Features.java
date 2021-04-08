@@ -4,16 +4,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.junit.Test;
 import com.company.domain.HelperClass;
 import com.company.util.TestUtils;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 public class Java8Features {
     @Test
     public void BiPredicate() {
         System.out.println(equalPredicate().test("abcd", "adbc"));
+    }
+
+    private BiPredicate<String, String> equalPredicate() {
+        return (a, b) -> a.contains("a") && b.contains("b");
     }
 
     @Test
@@ -38,7 +44,15 @@ public class Java8Features {
         System.out.println(stringMap);
     }
 
-    private BiPredicate<String, String> equalPredicate() {
-        return (a, b) -> a.contains("a") && b.contains("b");
+    @Test
+    public void testConsumerAccept(){
+        checkIfEmpty("", System.out::println);
+        checkIfEmpty("test", System.out::println);
+    }
+
+    private void checkIfEmpty(final String value, final Consumer<String> function){
+        if(!Strings.isNullOrEmpty(value)){
+            function.accept(value);
+        }
     }
 }
