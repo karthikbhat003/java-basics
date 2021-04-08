@@ -85,4 +85,14 @@ public class RegexTest {
 
         System.out.println(testString);
     }
+
+    @Test
+    public void emailValidationTest() {
+        final Pattern pattern = Pattern.compile("\\w+@[a-zA-Z.-]+", Pattern.UNICODE_CASE);
+        final Matcher matcher = pattern.matcher("karthik123@gmail.com");
+        if (matcher.find()) {
+            System.out.println("found");
+            System.out.println("Start: " + matcher.start() + " End: " + matcher.end());
+        }
+    }
 }
