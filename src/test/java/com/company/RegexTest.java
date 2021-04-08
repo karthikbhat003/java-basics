@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class RegexTest {
     @Test
-    public void regexTrimNumberAtTheEnd(){
+    public void regexTrimNumberAtTheEnd() {
         final String s = "test vac111";
         System.out.println(s.replaceAll("[0-9]+$", " ").trim());
     }
@@ -48,9 +48,41 @@ public class RegexTest {
         final Matcher matcher = pattern.matcher("hello new world new ");
         // loop it and then find it
         while (matcher.find()) {
-            System.out.println("Matcher group: "+ matcher.group());
+            System.out.println("Matcher group: " + matcher.group());
             System.out.println(matcher.start());
             System.out.println(matcher.end());
         }
+    }
+
+    @Test
+    public void testPatternGroup() {
+        final Pattern pattern = Pattern.compile("\\$\\{.*?}", Pattern.UNICODE_CASE);
+        final Matcher matcher = pattern.matcher("${DEV_TOKEN}  hello ${APP_TOKEN}");
+        // loop it and then find it
+        while (matcher.find()) {
+            System.out.println("Matcher group: " + matcher.group(0));
+        }
+    }
+
+    // https://www.geeksforgeeks.org/pattern-quotestring-method-in-java-with-examples/
+    @Test
+    public void testPatternGroupWithQuote() {
+        String testString = "${TOKEN1} hello ${TOKEN2}";
+
+        final Pattern pattern = Pattern.compile("\\$\\{.*?}", Pattern.UNICODE_CASE);
+        final Matcher matcher = pattern.matcher(testString);
+        // loop it and then find it
+        while (matcher.find()) {
+            System.out.println("Matcher group: " + matcher.group(0));
+
+            Pattern subexpr = Pattern.compile(Pattern.quote(matcher.group(0)));
+
+            // \Q and \E mark the beginning and end of the quoted part of the string.
+            System.out.println(subexpr);
+
+            testString = subexpr.matcher(testString).replaceAll("replaced..!!");
+        }
+
+        System.out.println(testString);
     }
 }
